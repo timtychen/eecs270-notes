@@ -1,0 +1,81 @@
+#+TITLE: Boolean Algebra
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-09-14
+
+* Definitions
+  
+/Disjunction/, or logical OR, will be represented as $+$. /Conjunction/, or 
+logical AND, will be represented as $\cdot$.
+  
+Assume there are at least two distinct elements in the Boolean field $B$:
+- Disjunction and conjunction are closed over $B$.
+- Disjunction and conjunction are commutative.
+- Disjunction and conjunction are associative.
+- The identity for disjunction is 0 ($a + 0 = a$).
+- The identity for conjunction is 1 ($a + 1 = a$).
+- Distributive laws hold for disjunction and conjunction too.
+- The /complement/ of $a$ is an element of $B$ that satisfies the
+  following statements:
+\begin{align*}
+a + a' &= 1 \\
+a \cdot a' &= 0
+\end{align*}
+- The /dual/ can be found by swapping AND and OR and swapping 0 and 1.
+  - If both functions are equal, the expression is called /self-dual/.
+
+* Huntington Postulates and Algebraic Laws
+  
+Throughout, AND + NOT = NAND, OR + NOT = NOR. Each of these two gates are
+functionally complete.
+  
+Given an element $x \in B$, we can draw circuit switches to represent various laws:
+
+- Two-switch identity gates :: a two-switch OR gate can be reduced to a
+     single-switch AND gate.
+- Idempotence Laws :: If two switches are coupled, they can be reduced to a
+     single switch.
+- Involution Laws :: If the NOT operation is applied twice in a row, the inverters
+     can be eliminated.
+- Complementarity Laws :: A complement can be reduced to a constant gate.
+- Commutative Laws :: We can switch the direction of any two gates either ORed
+     or ANDed to each other.
+- Associative Laws :: Two back-to-back two-input gates can be reduced to a single
+     three-input gate.
+- DeMorgan's Laws :: AND \equiv NOR, OR \equiv NAND
+
+* Basic Theorems
+  
+** Consensus Theorems
+   
+Goal: to minimize the number of required transistors.
+
+Statement: 
+\begin{align*}
+X \cdot Y + Y \cdot Z + X' \cdot Z &= X \cdot Y + X' \cdot Z \\
+(X + Y) \cdot (Y + Z) \cdot (X' + Z) &= (X + Y) \cdot (X' + Z)
+\end{align*}
+
+In a sense, the middle gate is unnecessary. Proof is provided in the course
+pack.
+
+* Proving Techniques
+  
+*NOTE:* Whenever writing proofs, write /all the steps/. This will make it much
+easier to write programs from mathematical descriptions.
+
+* The Carry Function for a Full Adder
+  
+This function is self-dual. 
+
+$C_{out} = A \cdot B + B \cdot C_{in} + C_{in} \cdot A$
+
+* Common Logic Gates
+
+- AND :: Both inputs must be 1.
+- OR :: Both inputs must not be 0.
+- XOR :: Only one of the inputs must be 1.
+- Inverter (NOT) :: Returns the opposite of the input.
+- Buffer :: Returns the input.
+- NAND :: NOT + AND
+- NOR :: NOT + OR
+- XNOR :: Tests for equivalence.
