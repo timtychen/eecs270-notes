@@ -1,0 +1,32 @@
+#+TITLE: Timing Diagrams
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-09-16
+
+* Timing Delay
+  
+Two types of delay:
+- Gate Delays :: Due to parasitic reactances
+- Interconnect Delays :: Due to parasitic resistances
+
+* Propagation Delay
+  
+- Rise/fall delay :: The time difference between when the input reaches the
+50% mark and the output reaches the 50% mark. Labelled as $t_{pHL}$ or
+$t_{pLH}$.
+
+- Rise/fall time :: The amount of time it takes the signal to go from 90% to 10%
+                    (or vice versa). Labelled as $t_f$ or $t_r$.
+
+To find the propagation delay $t_p$, you simply average the rise and fall delays.
+
+If there are multiple paths through the circuit, you need to critically inspect 
+*all* the paths to find the propagation delay of the entire circuit. The longest
+delay in the circuit is called the /critical path/.
+
+* Ring Oscillator
+  
+By using an odd number of inverters in series that feed back, you can take
+advantage of gate delays to produce a binary oscillator. The oscillator's period
+is related to the number of gates and the gate delay time.
+
+* Glitches and Hazards
