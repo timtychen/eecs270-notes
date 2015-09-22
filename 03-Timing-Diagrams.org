@@ -30,3 +30,20 @@ advantage of gate delays to produce a binary oscillator. The oscillator's period
 is related to the number of gates and the gate delay time.
 
 * Glitches and Hazards
+  
+In a circuit with /reconvergence/, or a circuit where a signal flows through two
+or more different paths, due to unequal delays, an output signal can change for
+a brief period, then change back. This is called a /static-1 hazard/.
+Static hazards can result in /glitches/, where a signal inexplicably changes for
+a short time.
+
+To avoid static hazards, insert another gate to absorb the hazard in front of
+the output gate. The output gate should now have 3 inputs. To know what gate to
+use, you analyze the circuit to determine how you can affect the output without
+changing the meaning of the circuit.
+
+* Lab 2
+
+The 5-input XOR gate's longest delay is from point V to the output of the circuit.
+
+The /ripple carry adder/ (RCA)'s longest delay is along the carry wires.
