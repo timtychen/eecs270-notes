@@ -1,0 +1,48 @@
+#+TITLE: Encoding
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-09-23
+
+* Representing Base 10 in Binary
+
+** BCD
+
+(Binary Coded Decimal)
+
+There are several different ways of encoding decimal in BCD, and they
+are named based on the coefficients of each place.
+- 8421 (same as normal)
+- 2421
+- 6311
+- 631-1
+- 84-2-1
+- Excess-3 (reflected 631-1)
+
+** Gray Code
+
+Gray code is based on the /unit distance code/, where only 1 bit changes
+between each increment. 
+
+#+BEGIN_SRC
+  000  (0)
+  001  (1)
+  011  (2)
+  010  (3)
+  110  (4)
+  111  (5)
+  101  (6)
+  100  (7)
+#+END_SRC
+
+Gray code is useful for encoding an angular position in a rotary encoder.
+
+** Why not just use place-value?
+
+- Many decimal fractions have an infinite representation in binary place-value.
+  BCD does not have this problem.
+- Multiplication and division by 10 is easier in BCD versus binary.
+- Alignment of decimal numbers is a simple shift.
+
+** Disadvantages
+
+- Less space-efficient (20% more memory)
+- Less power-efficient (arithmetic operations are more complex in circuit)

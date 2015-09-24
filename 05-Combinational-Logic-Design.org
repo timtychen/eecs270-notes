@@ -1,0 +1,97 @@
+#+TITLE: Combinational Logic Design
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-09-23
+
+* Design Principles
+
+1. Problem Statement. This is usually very verbose and difficult to represent
+   in computational form, and as such, we must attempt to simplify it.
+2. Canonical Implementation. This is the minimal implementation, ignoring the
+   die area/gate count, simply focusing on making it work.
+3. Minimization. Use boolean algebra to reduce the gate count.
+4. Scaling. 
+
+* Understanding a Problem in terms of variables
+
+Any boolean expression can be split into two parts: the canonical sum of
+products and the canonical product of sums. Two-level programmable logic
+makes it very easy to implement this -- simply place sum/product gates in level
+1 and product/sum gates in level 2.
+
+* In-class example problem
+
+#+BEGIN_QUOTE
+In a 3-story building, there is a lamp to illuminate a stairwell. The lamp can
+be independently turned ON and OFF from each floor by flipping an electrical
+switch on that floor. Design the logic circuit for the problem.
+#+END_QUOTE
+
+** Translating this into boolean variables
+
+Define $L$ as the lamp, $A, B, C$ as the switches on each floor. Each switch
+has an UP or DOWN state, which we can express as so:
+
+\begin{align*}
+X &\in \{A, B, C\} \\
+\text{Let } X = 1 &\implies \text{ switch is UP} \\
+X = 0 &\implies \text{ switch is DOWN} \\
+\text{Let } L = 1 &\implies \text{ lamp is ON} \\
+L = 0 &\implies \text{ lamp is OFF}
+\end{align*}
+
+** Truth table
+
+| A | B | C | L |
+|---+---+---+---|
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 1 |
+| 0 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 1 |
+| 0 | 1 | 1 | 0 |
+| 1 | 0 | 1 | 0 |
+| 1 | 1 | 0 | 0 |
+| 1 | 1 | 1 | 1 |
+
+$$ L \iff (A'B'C) + (A'BC') + (AB'C') + (ABC) $$ 
+This problem is represented as a Sum of Products (SOP).
+
+** Canonical/Standard Sum of Products
+   
+Our boolean function looks like:
+$$ L(A, B, C) = A'B'C + A'BC' + AB'C' + ABC $$
+
+When written in the complemented form, inputs are called /literals/ and
+products are called /minterms/.
+
+** Direct Implementation
+
+Four three-input AND gates and a four-input OR gate would work. However, CMOS
+logic gates have /negated/ outputs -- NAND and NOR gates are far more common,
+and adding a NOT gate after each NAND or NOR gate would take 2 additional
+transistors. As a result, it is ideal to adjust the design such that it can use
+NAND and NOR gates.
+
+** Minimization
+
+\begin{align}
+L(A, B, C) &= AB'C' + A'BC' + A'B'C + ABC \\
+&= C'(AB' + A'B) + C(AB + A'B') \\
+&= (A \oplus B)C' + (A \oplus B)'C \\
+&= (A \oplus B) \oplus C \\
+&= A \oplus B \oplus C
+\end{align}
+
+1. Given
+2. Distributive Law
+3. Definition of XOR
+4. Definition of XOR
+5. Associative Law
+   
+This design has saved 60% on gates, 75% on literals, and 75% on transistors.
+
+** Scaling
+
+The number of minterms increases exponentially as we increase the number of
+floors. As a result, we cannot use the canonical solution, or else costs will
+spiral out of control. By using XOR and XNOR gates, we can scale linearly to
+higher floors.
