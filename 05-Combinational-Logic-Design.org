@@ -1,6 +1,9 @@
 #+TITLE: Combinational Logic Design
 #+AUTHOR: Nathan Moos
-#+DATE: 2015-09-23
+#+DATE: 2015-09-28
+#+LATEX_HEADER: \newcommand*\NAND{\text{NAND}}
+#+LATEX_HEADER: \newcommand*\NOR{\text{NOR}}
+#+LATEX_HEADER: \newcommand*\NOT{\text{NOT}}
 
 * Design Principles
 
@@ -95,3 +98,117 @@ The number of minterms increases exponentially as we increase the number of
 floors. As a result, we cannot use the canonical solution, or else costs will
 spiral out of control. By using XOR and XNOR gates, we can scale linearly to
 higher floors.
+* BCD to 7-Segment Converter
+
+See textbook for diagram. 
+
+Truth table:
+| w | x | y | z |   | a | b | c | d | e | f | g |
+|---+---+---+---+---+---+---+---+---+---+---+---|
+| 0 | 0 | 0 | 0 |   | 1 | 1 | 1 | 1 | 1 | 1 | 0 |
+| 0 | 0 | 0 | 1 |   | 0 | 1 | 1 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 0 |   | 1 | 1 | 0 | 1 | 1 | 0 | 1 |
+| 0 | 0 | 1 | 1 |   | 1 | 1 | 1 | 1 | 0 | 0 | 1 |
+| 0 | 1 | 0 | 0 |   | 0 | 1 | 1 | 0 | 0 | 1 | 1 |
+| 0 | 1 | 0 | 1 |   | 1 | 0 | 1 | 1 | 0 | 1 | 1 |
+| 0 | 1 | 1 | 0 |   | 1 | 0 | 1 | 1 | 1 | 1 | 1 |
+| 0 | 1 | 1 | 1 |   | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 0 | 0 |   | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| 1 | 0 | 0 | 1 |   | 1 | 1 | 1 | 1 | 0 | 1 | 1 |
+| 1 | 0 | 1 | 0 |   | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 1 |   | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 0 | 0 |   | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 0 | 1 |   | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 1 | 0 |   | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 1 | 1 | 1 |   | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+
+Write 7 equations, one for each output.
+
+* Majority Gate
+  
+A majority gate has an output $Z = 1 \iff$ at least $\frac{n}{2}+1$ inputs
+are 1.
+
+** Truth table
+
+| a | b | c | z | Minterm (AND)  | Maxterm (OR)         |
+|---+---+---+---+----------------+----------------------|
+| 0 | 0 | 0 | 0 | $m_0 = a'b'c'$ | $M_0 = a + b + c$    |
+| 0 | 0 | 1 | 0 | $m_1 = a'b'c$  | $M_1 = a + b + c'$   |
+| 0 | 1 | 0 | 0 | $m_2 = a'bc'$  | $M_2 = a + b' + c$   |
+| 0 | 1 | 1 | 1 | $m_3 = a'bc$   | $M_3 = a + b' + c'$  |
+| 1 | 0 | 0 | 0 | $m_4 = ab'c'$  | $M_4 = a' + b + c$   |
+| 1 | 0 | 1 | 1 | $m_5 = ab'c$   | $M_5 = a' + b + c'$  |
+| 1 | 1 | 0 | 1 | $m_6 = abc'$   | $M_6 = a' + b' + c$  |
+| 1 | 1 | 1 | 1 | $m_7 = abc$    | $M_7 = a' + b' + c'$ |
+
+** Canonical sum-of-products
+
+$Z = 1 \iff m_3 + m_5 + m_6 + m_7 = a'bc + ab'c + abc' + abc$
+
+*** Cost
+
+- Gates :: 5
+- Literals :: 12
+- Transistors :: $4(3 \times 2 (\NAND) + 2 (\NOT)) + (4 \times 2(\NOR) + 2(\NOT)) = 42$
+                 
+** Minimization of sum-of-products
+
+\begin{align}
+Z(a, b, c) &= a'bc + ab'c + abc' + abc \\
+&= a'bc + abc + ab'c + abc + abc' + abc \\
+&= (a + a')bc + ac(b + b') + ab(c + c') \\
+&= bc + ac + ab
+\end{align}
+1. Given
+2. Idempotence
+3. Distributive Law
+4. Law of Complementarity
+   
+*** Cost
+
+- Gates :: 4
+- Literals :: 6
+- Transistors :: $3(2 \times 2(\NAND) + 2 (\NOT) + (3 \times 2(\NOR) + 2(\NOT)) = 26$
+
+** Canonical product-of-sums
+   
+$Z = 1 \iff M_0 M_1 M_2 M_4 = (a + b + c)(a + b + c')(a + b' + c)(a' + b + c)$
+
+** Minimization of product-of-sums
+
+\begin{align}
+Z(a, b, c) &= (a + b + c)(a + b + c')(a + b' + c)(a' + b + c) \\
+&= (a + b + c)(a + b + c')(a + b + c)(a + b' + c)(a + b + c)(a' + b + c) \\
+&= (a + b)(a + c)(b + c)
+\end{align}
+1. Given
+2. Idempotence
+3. Law Complementarity
+   
+This is the dual of the sum-of-products. Since these are equal, majority
+function $z(a, b, c)$ is self-dual.
+** Which one?
+
+Prefer sum-of-products if there are fewer minterms, and prefer product-of-sums
+if there are fewer maxterms.
+** NAND-NAND
+
+$Z = (Z')' = ((ab + bc + ca)')' = ((ab)'(bc)'(ca)')'$
+By applying the Law of Involution, we can convert the sum-of-products into a
+design including only NAND gates. This is cheapest in CMOS.
+* Sum-of-products
+
+Four ways to implement:
+- AND-OR
+- NAND-NAND (Most ideal for CMOS)
+- OR-NAND
+- NOR-OR
+
+* Product-of-sums
+
+Four ways to implement:
+- OR-AND
+- NOR-NOR (Most ideal for CMOS)
+- AND-NOR
+- NAND-AND
