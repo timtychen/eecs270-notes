@@ -1,0 +1,89 @@
+#+TITLE: Combinational Logic Minimization
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-09-30
+
+* Representation for Minimzation
+
+When the number of variables is less than 3, it is easiest to use a truth table
+and minimize a minterm/maxterm representation.
+
+When $3 \le n \le 5$, it is easiest to use the Karnaugh map method.
+
+When $n > 5$, Quine-McCluskey is best, and can be automated.
+
+The example for this lecture will be the majority gate.
+
+* Truth table/Boolean algebra
+  
+| A | B | C | F |
+|---+---+---+---|
+| 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 0 |
+| 0 | 1 | 0 | 0 |
+| 0 | 1 | 1 | 1 |
+| 1 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 1 |
+| 1 | 1 | 0 | 1 |
+| 1 | 1 | 1 | 1 |
+
+** Minterm expansion
+
+$$ F = a'bc + a'bc + abc' + abc $$
+
+Minimized, this becomes $F = bc + ac + ab$. In notes set 05, I copied down the
+minimization logic steps, they are omitted here for brevity.
+
+* Karnaugh Map
+  
+This method is a visual representation of the truth table as a 2-dimensional
+chart.
+
+|         | $ab = 00$ | $ab = 01$ | $ab = 11$ | $ab = 10$ |
+| $c = 0$ | $m_0 = 0$ | $m_2 = 0$ | $m_6 = 1$ | $m_4 = 0$ |
+| $c = 1$ | $m_1 = 0$ | $m_3 = 1$ | $m_7 = 1$ | $m_5 = 1$ |
+
+The reason that $ab = 11$ is before $ab = 10$ in the Karnaugh Map is that we 
+cannot easily combine rows and columns in the truth table. In the Karnaugh Map,
+it is easy to combine adjacent boxes.
+
+(*NOTE:* this order is the same as Gray Code.)
+
+In order to minimize this, you can combine adjacent =1= s. In this case,
+combining $m_3$ and $m_7$ results in $bc$, $m_6$ and $m_7$ is $ab$, $m_5$ and
+$m_7$ is $ac$. Therefore, $F(a, b, c) = bc + ac + ab$.
+
+Keep in mind that the $m_7$ term, corresponding to the number 111_2, is 
+disregarded because it is the common intersection.
+
+** 4-variable K-map
+
+|           | $ab = 00$ | $ab = 01$ | $ab = 11$ | $ab = 10$ |
+| $cd = 00$ | $m_0$     | $m_4$     | $m_{12}$  | $m_8$     |
+| $cd = 01$ | $m_1$     | $m_5$     | $m_{13}$  | $m_9$     |
+| $cd = 11$ | $m_3$     | $m_7$     | $m_{15}$  | $m_{11}$  |
+| $cd = 10$ | $m_2$     | $m_6$     | $m_{14}$  | $m_{10}$  |
+
+** General rules
+   
+*** Definitions
+
+- Implicant :: Any cluster of size 1, 2, 4, 8, etc. which can be combined 
+               together, representing a product term, is called an /implicant/.
+- Prime implicant :: An implicant that cannot be combined with another term to
+     eliminate a variable.
+- Essential prime implicant :: A prime implicant that contains a minterm that is
+     not covered by any other prime implicants.
+     
+When implicants are determined to be non-essential, they can be discarded. The
+set of essential prime implicants and the remaining un-covered minterms is the
+minimal expression.
+
+*** Procedure
+
+Given a sum of minterms:
+1. Find all prime implicants
+2. Find essential prime implicants
+3. Write the minimal expression, including all essential prime implicants,
+   then add the minimum number of prime implicants to cover all minterms.
+
+* Quine-McCluskey Method
