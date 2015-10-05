@@ -1,0 +1,49 @@
+#+TITLE: Types of Logic Design
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-10-05
+
+* Random Logic Design
+  
+Easy to build low-area, low-power devices.
+
+* Structured Logic
+  
+Programmable logic, such as PLA, PLD, PGA, and ROM.
+
+In general, increased chip area, which results in higher power consumption.
+  
+* Combinational Building Blocks
+
+** Decoder
+   
+A /decoder/ has $n$ input lines and at most $2^n$ unique outputs.  The inputs 
+are called /address inputs/, and often decoders come with an $E$ input (for
+enable). 
+
+Truth table for 1:2 active-1 decoder:
+| $E$ | $A_0$ | $D_0$ | $D_1$ |
+|-----+-------+-------+-------|
+|   0 |     X |     0 |     0 |
+|   1 |     0 |     1 |     0 |
+|   1 |     1 |     0 |     1 |
+
+A 2:4 active-1 decoder looks like:
+| $E$ | $A_0$ | $A_1$ | $D_0$ | $D_1$ | $D_2$ | $D_3$ |
+|-----+-------+-------+-------+-------+-------+-------|
+|   0 | X     | X     |     0 |     0 |     0 |     0 |
+|   1 | 0     | 0     |     1 |     0 |     0 |     0 |
+|   1 | 0     | 1     |     0 |     1 |     0 |     0 |
+|   1 | 1     | 0     |     0 |     0 |     1 |     0 |
+|   1 | 1     | 1     |     0 |     0 |     0 |     1 |
+
+** Multiplexer
+   
+Opposite of a decoder -- it converts more inputs to fewer outputs.
+
+Easily implemented as $Z = \sum_{i=0}^n I_i (\prod_{j=0}^m S_j)$. 
+
+** Demultiplexer
+
+** Encoder
+
+** Comparator

@@ -86,4 +86,13 @@ Given a sum of minterms:
 3. Write the minimal expression, including all essential prime implicants,
    then add the minimum number of prime implicants to cover all minterms.
 
+** Don't cares
+   
+When you have don't cares in a Karnaugh map (values that can be either 0 or 1),
+treat both cases (0 and 1) independently.
+
+The reason you'd want to use a "don't care" value for a circuit is for
+minimization -- if you have invalid input, it can be simpler to set the output
+to "don't care".
+
 * Quine-McCluskey Method
