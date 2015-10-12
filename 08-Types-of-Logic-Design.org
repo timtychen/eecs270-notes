@@ -1,6 +1,6 @@
 #+TITLE: Types of Logic Design
 #+AUTHOR: Nathan Moos
-#+DATE: 2015-10-05
+#+DATE: 2015-10-12
 
 * Random Logic Design
   
@@ -36,14 +36,57 @@ A 2:4 active-1 decoder looks like:
 |   1 | 1     | 0     |     0 |     0 |     1 |     0 |
 |   1 | 1     | 1     |     0 |     0 |     0 |     1 |
 
+It is also possible to implement any arbitrary sum-of-products or
+product-of-sums expression with a decoder. If each truth-table input is wired
+to an active-1 decoder's input pins, each output pin will correspond to a
+minterm. (If the decoder is active-0, the outputs will correspond to maxterms.)
+All output pins can then be combined with an OR gate.
+
 ** Multiplexer
    
 Opposite of a decoder -- it converts more inputs to fewer outputs.
 
 Easily implemented as $Z = \sum_{i=0}^n I_i (\prod_{j=0}^m S_j)$. 
 
-** Demultiplexer
+Very large muxes require an /address bus/ (series of select pins) to point to
+the desired bit. An $M$:1 mux, for example, requires $n$ select pins, where 
+$2^n = M$. 
 
-** Encoder
+It is possible to reduce muxes by adding gates in front of the inputs to a
+smaller mux.
+
+** Tri-state Buffer
+
+A tri-state buffer includes an input pin, and output pin, and a control pin for
+enabling. A truth table is provided:
+
+| EN | IN | OUT            |
+|----+----+----------------|
+|  0 | X  | High-impedance |
+|  1 | 0  | 0              |
+|  1 | 1  | 1              |
+
+When the OUT pin is in high-impedance mode, it effectively acts as disconnected.
 
 ** Comparator
+   
+Single-bit equality can be tested with an XNOR gate, but multiple-bit equality
+requires something more complex. Additionally, comparators can tell us the sense
+of an inequality.
+
+* Parity Computation
+
+If bits become randomly flipped, this can become a huge problem in
+high-reliability systems. It turns out that it is possible to detect random bit
+flips, using a technique called /parity computation/. Both sides of a bus must
+perform the same parity computation, then compare both results and request
+re-transmission in the case of inequality. 
+
+** XOR Tree
+
+The simplest form of parity involves a tree of exclusive-OR gates. This works
+well if an odd number of bits are flipped, but an even number of bit flips will
+be undetected.
+
+This /can/ be effective though; it is simple and single-bit errors may be the
+only type of error worth protecting against due to testing.
