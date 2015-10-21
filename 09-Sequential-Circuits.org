@@ -1,0 +1,108 @@
+#+TITLE: Sequential Circuits
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-10-14
+
+* Mealy Machine
+  
+Outputs are a function of the states and the inputs. States feed back into the
+combinational portion of the circuit. 
+
+*Disadvantage:* Output may have a lot of glitches.
+
+* Moore Machine
+
+Outputs can only change when states change. The combinational portion is
+separated and the state flip-flops are in series with the combinational
+circuits.
+
+*Disadvantage:* Takes more hardware.
+* Components
+
+- Flip flops
+- Registers
+- Counters
+- Finite State Machines
+- Multiplexers
+- Memory
+- Logic
+  
+** 3-instruction microprocessor
+
+- Address bus
+- Program Counter (PC)
+- Instruction Register (IR)
+- On-chip Random-Access Memory (RAM)
+- Arithmetic Logic Unit (ALU)
+- Register File (RF)
+* Flip-flop
+
+** Definition
+
+A flip-flop can store 1 bit of information indefinitely. The clock acts as a
+latch, synchronizing the output with the rest of the circuit.
+
+** S-R (Set-Reset)
+   
+Two inputs: $S$ and $R$. Operation table:
+
+| S | R | Q(t+1) | Operation |
+|---+---+--------+-----------|
+| 0 | 0 | Q(t)   | Hold      |
+| 0 | 1 | 0      | Reset     |
+| 1 | 0 | 1      | Set       |
+| 1 | 1 | X      | Invalid   |
+
+An S-R flip-flop can be controlled using Set, Reset, and Hold inputs.
+
+** J-K
+   
+The S-R flip-flop has an invalid state when $SR = 11$. In order to eliminate
+that, the J-K flip-flop attaches two AND gates to the input side of the S-R
+flip-flop. These AND gates pair J, Q' and K, Q. Operation table:
+| J | K | Q(t+1) | Operation |
+|---+---+--------+-----------|
+| 0 | 0 | Q(t)   | Hold      |
+| 0 | 1 | 0      | Reset     |
+| 1 | 0 | 1      | Set       |
+| 1 | 1 | Q'(t)  | Toggle    |
+
+This flip-flop is defined over all possible inputs.
+
+** T (Toggle)
+   
+The T flip-flop is used to simply toggle the input. Operation table:
+| T | Q(t + 1) | Operation |
+|---+----------+-----------|
+| 0 | Q(t)     | Hold      |
+| 1 | Q'(t)    | Toggle    |
+
+The T flip-flop is defined in terms of the J-K flip flop where J and K are
+shorted together and called T.
+
+** D (Data/Delay)
+   
+The D flip-flop is used to insert a delay. Operation table:
+
+| D | Q(t + 1) | Operation |
+|---+----------+-----------|
+| 0 | 0        | Reset     |
+| 1 | 1        | Set       |
+
+The D flip-flop is defined in terms of the J-K flip-flop where J and K' are
+shorted together and called D.
+** Clock wire
+
+When the clock is zero, the circuit stays in the HOLD state. This technique is
+called /level-sensitive clocking/ (LSC). 
+
+The amount of time the signal is high is usually represented as a /duty cycle/,
+or the ratio of the time the signal is high to the period of the clock.
+
+If a clock is high for too long, it can miss changes. A few ways to combat this
+include:
+- Narrowing the clock (setting the duty cycle lower)
+- Master-slave clocking, also called pulse-triggering
+- Edge-triggering
+** Dual-rail Static ETL
+
+An implementation of an S flip-flop that is very fast and space-efficient.
