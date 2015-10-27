@@ -106,3 +106,42 @@ include:
 ** Dual-rail Static ETL
 
 An implementation of an S flip-flop that is very fast and space-efficient.
+* Binary Counter/Divider
+
+An essential part of many sequential circuits.
+
+** Ripple up-counter
+
+Say you have a series of toggle flip-flops where each $Q$ is connected to the
+next flip-flop's incoming clock wire. Assuming an active-low clock wire, this
+will cause the flip-flops to toggle on a clock low, which can act like a
+counter. The output values from each flip-flop can be arranged to show binary
+representations. This is called an /up-counter/. An $n$-bit up-counter has $2^n$
+states.
+
+A ripple up-counter is limited by flip-flop delays. A way to prevent glitches
+from occuring due to these delays is to attach AND gates between each
+lower-order bit.
+
+** Ring counter
+
+In a ring counter, which counts in a modified gray code, the clock wire is
+connected to several parallel toggle flip-flops. An $n$-bit ring counter has
+$n$ states.
+
+** Johnson counter
+
+A Johnson counter is like a ring counter that accumulates the bits it has
+toggled. An $n$-bit Johnson counter has $2n$ states.
+** How to make one
+
+- Step 1 :: Draw a state diagram. 
+- Step 2 :: Write a state transition table (old state $\rightarrow$ new state).
+            Use the state diagram to write this. If anything is unspecified by
+            the state diagram, its output can be considered "don't cares".
+- Step 3 :: Write the next state as a function of the present state. Karnaugh
+            maps are an excellent tool for doing so.
+- Step 4 :: Select flip-flop type. Use an excitation/operation table to define
+            the flip-flop variables in terms of $Q$ and $Q^+$. 
+- Step 5 :: Draw Karnaugh maps to find the /excitation equation/, where you
+            apply the flip-flop transform.
