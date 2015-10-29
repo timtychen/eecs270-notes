@@ -145,3 +145,41 @@ toggled. An $n$-bit Johnson counter has $2n$ states.
             the flip-flop variables in terms of $Q$ and $Q^+$. 
 - Step 5 :: Draw Karnaugh maps to find the /excitation equation/, where you
             apply the flip-flop transform.
+            
+*NOTE:* It is possible that an arbitrary counter could start in a "don't cares"
+state. If this happens, your counter can enter an undefined state.
+
+*** Verification
+    
+Start by changing all "don't cares" in the excitation maps to the values assumed
+by grouping (e.g. included in SOP expression = 1, not included = 0). Now,
+re-draw the state diagram with the new values. This will allow all initial
+states to be defined.
+
+** 4-bit synchronous counter
+
+- 4 inputs: $A$, $B$, $C$, $D$ ($D$ is MSB)
+- 4 outputs: $Q_A$, $Q_B$, $Q_C$, $Q_D$ ($Q_D$ is MSB)
+- Clear, Load, and Chip Enable pins
+
+The *Load* pin sets each output pin to the same level as the input pins. The
+*Clear* pin sets each output pin to 0, and the *Chip Enable* pin enables and
+disables the counter. 
+
+You can build a modulo-$N$ counter easily with this: using parallel XNOR gates
+attached to each output, compare the output with $N$ and connect that with the
+*Clear* pin.
+* Register
+
+A set of D flip-flops in parallel with a common clock. By using multiplexers,
+you can make it possible to load registers in either serial or parallel.
+
+Two states: *load* and *hold*. 
+
+To load in serial, you shift all stored bits over and attach an input bit each
+clock pulse.
+
+** Linear feedback shift register
+
+One of the most useful register applications -- randomly generates all possible
+bitstrings in a range.
