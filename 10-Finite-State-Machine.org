@@ -1,0 +1,79 @@
+#+TITLE: Finite State Machine
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-11-02
+
+* Moore FSM
+  
+Primary input functions $x_i(t)$ are connected in series with a combinational
+logic block, then an array of flip-flops, then another combinational logic
+block. The output of the second combinational logic block is called the /primary
+output/ and changes on clock pulses.
+
+While a Moore circuit is not compact, the output will not have glitches.
+
+A Moore FSM can be expressed as either a circuit schematic or a set of output
+and state equations.
+
+* Mealy FSM
+
+Primary inputs are in series with combinational logic and primary outputs, and
+there is a feedback loop that contains flip-flops. This type of circuit uses
+less hardware, but at the cost of a higher number of glitches.
+* Analyzing an FSM
+
+- Step 1 :: Find the characteristic equations of the flip-flops
+- Step 2 :: Produce a set of next-state maps for each flip-flop
+- Step 3 :: Write a state transition table
+- Step 4 :: Draw a state diagram
+
+** Moore FSM specifics
+   
+Outputs are functions of *state*, so all inputs must be consumed by flip-flop
+state maps. Therefore, the output changes every clock cycle.
+
+** Mealy FSM specifics
+
+Outputs are functions of inputs /and/ state, so when making next-state maps, you
+also need to make an output map. Additionally, the state transition table will
+include an output that is dependent on inputs.
+
+Mealy machines allow the output to change asynchronously with the inputs.
+* Design of an FSM
+
+- Step 1 :: Draw a state diagram from the problem definition
+- Step 2 :: Produce a transition table from the state diagram
+- Step 3 :: Eliminate unnecessary states
+- Step 4 :: Choose flip-flops and a way to encode states.
+            
+** Moore FSM specifics
+
+** Mealy FSM specifics
+
+** Example: Sequence Detector
+
+*Problem definition:* $Z = 1$ when $X = 1 0 1$.
+
+Start by defining $S_0$ as the initial state, where output $Z = 0$. This state
+represents the time when we have not detected a sequence. We know that $X = 0$
+will not allow for a transition, therefore the FSM remains in state $S_0$ when
+$X = 0$.
+
+When $X = 1$, we advance to at state $S_1$. The output is still $Z = 0$ because
+the we haven't detected the sequence yet. If the next value of $X = 0$, we can
+advance to state $S_2$, but if the next value of $X = 1$, we cannot.
+
+By similar logic, we advance from $S_2$ to $S_3$ if $X = 1$. The output $Z = 1$
+for $S_3$ because this implies that we have advanced by the sequence.
+
+Filling in the gaps reveals the full state diagram. That diagram is present in
+the coursepack.
+
+If we choose to build a Moore FSM the next-state diagram looks like:
+| Current State | Next State, $X = 0$ | Next State, $X = 1$ | Output |
+|---------------+---------------------+---------------------+--------|
+| $S_0$         | $S_0$               | $S_1$               | 0      |
+| $S_1$         | $S_2$               | $S_1$               | 0      |
+| $S_2$         | $S_0$               | $S_3$               | 0      |
+| $S_3$         | $S_2$               | $S_1$               | 1      |
+
+Now, we make next-state maps and implement the logic using flip-flops.

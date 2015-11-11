@@ -1,0 +1,105 @@
+#+TITLE: Adders and Multipliers
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-11-09
+#+LATEX_HEADER: \newcommand*\lxor{\oplus}
+
+* Ripple-carry adder
+
+- Advantage :: Small number of gates.
+- Disadvantage :: Critical path delay is *8* gate delays long.
+
+We can build a faster adder!
+
+* Two-level logic adder
+
+- Advantage :: Low gate delay - only 2 gate delays long
+- Disadvantage :: Exponential growth of the number of transistors
+                  
+This isn't the best answer.
+
+* Combined RCA and Two-level adder
+
+Build two 4-bit two-level adders and ripple them together. For an 8-bit adder,
+the gate delays are low and the number of transistors is reasonable, but gate
+delays balloon when we go to larger adder sizes.
+
+* Look-ahead adder
+  
+** Naive method
+
+Build logic that attempts to "look ahead" and determine what the ripple carry
+will be without waiting for it.
+
+The disadvantage is that the look-ahead logic block can become very large.
+
+** Efficient method
+
+Let's define two variables $G$ (generate) and $P$ (propagate). We know for sure
+that if $a_0 = b_0 = 1$, then $c_1 = 1$ regardless. We also know that if 
+$a_0 \ne b_0$, then we propagate the carry value.
+
+In general form:
+\begin{align*}
+G_i &= a_i b_i \\
+P_i &= a_i \lxor b_i
+c_{i+1} &= G_i + P_i c_i
+\end{align*}
+
+At the expense of 1 gate delay, we slow the growth rate of the look-ahead logic
+block. It has a reasonable number of gates given the number of bits.
+
+The problem is that the number of inputs in a gate increases with larger adder
+sizes. In order to reduce the circuit, you can use a /hierarchical/
+carry-lookahead adder that serves as a good compromise between gate delay and
+number of gates .
+* Multiplication Overview
+  
+Can be implemented with a combinational circuit:
+- Parallel
+- Fast
+- High die area cost
+  
+Can also be implemented with a sequential circuit:
+- Serial
+- Slow (requires $n$ cycles for $n$-bit numbers)
+- Reasonable area cost.
+  
+The result of an $n$-bit multiplication will be $2n$ bits long.
+
+* Sequential Multiplier
+  
+A simple sequential multiplier can be implemented with an adder and a shift
+register. Add and right-shift if the LSB is 1, and right-shift if LSB is 0.
+
+Store the multiplicand in a 4-bit shift register and multiplier as the rightmost
+bits of a 9-bit shift register.
+
+[[./sequential-multiplier.xoj]]
+
+Example: $1101_2 \cdot 1011_2$. With each number 4 bits wide, we must perform 4
+operations.
+#+BEGIN_SRC
+0 0 0 0 0 1 0 1 1 (Product Register)
+  1 1 0 1         (M = 1, Add)
+-----------------
+0 1 1 0 1 1 0 1 1 (M = 1, Add)
+
+0 0 1 1 0 1 0 1 1 (M = 1, Shift)
+  1 1 0 1         (M = 1, Add)
+-----------------
+1 0 0 1 1 1 1 0 1 (M = 1, Add)
+
+0 1 0 0 1 1 1 1 0 (M = 1, Shift)
+
+0 0 1 0 0 1 1 1 1 (M = 0, Shift)
+  1 1 0 1         (M = 1, Add)
+-----------------
+1 0 0 0 1 1 1 1 1 (M = 1, Add)
+
+0 1 0 0 0 1 1 1 1 (M = 1, Shift)
+#+END_SRC
+
+* Sequential Divider
+
+Division is the opposite of multiplication - the same design as the sequential
+multiplier can be re-used, but with the opposite shift direction and FSM logic.
