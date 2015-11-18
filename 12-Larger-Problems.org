@@ -1,0 +1,89 @@
+#+TITLE: Larger Problems
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-11-16
+#+LATEX_HEADER: \newcommand*\lxor{\oplus}
+
+* Vending Machine
+  
+A vending machine accepts one coin at a time, either 5c or 10c pieces. It also
+has a manual reset and an external clock. When the value of the coins inserted
+in the machine is 15c or more, then it sends a signal to the OPEN wire. For the
+sake of simplicity, do not implement change return.
+
+** When do we open it?
+
+1. 3 nickels, 0 dimes
+2. 2 nickels, 1 dime
+3. 1 nickel, 1 dime
+4. 1 dime, 1 nickel
+5. 2 dimes, 0 nickels 
+
+** States
+   
+You can have either 0c, 5c, 10c, or 15c. Here are some states.
+- $S_0$ :: 0c, stay in as long as no nickels or dimes received. Move to $S_1$ if
+           a nickel received, move to $S_2$ if a dime received.
+- $S_1$ :: 5c, stay in as long as no nickels or dimes received. Move to $S_2$ if
+           a nickel received, move to $S_3$ if a dime received.
+- $S_2$ :: 10c, stay in as long as no nickels or dimes received. Move to $S_3$
+           regardless of what is received.
+- $S_3$ :: $\ge$ 15c, set Open = 1.
+
+** Flip-flop assignment
+
+Use 2-bit binary encoding for each state. We can use two D flip-flops to implement
+this system.
+
+** State transition table
+
+| Present State | $D$ | $N$ | Next State | OPEN |
+|---------------+-----+-----+------------+------|
+|            00 |   0 |   0 |         00 |    0 |
+|               |   0 |   1 |         01 |    0 |
+|               |   1 |   0 |         10 |    0 |
+|               |   1 |   1 |         XX |    X |
+|---------------+-----+-----+------------+------|
+|            01 |   0 |   0 |         01 |    0 |
+|               |   0 |   1 |         10 |    0 |
+|               |   1 |   0 |         11 |    1 |
+|               |   1 |   1 |         XX |    X |
+|---------------+-----+-----+------------+------|
+|            10 |   0 |   0 |         10 |    0 |
+|               |   0 |   1 |         11 |    1 |
+|               |   1 |   0 |         11 |    1 |
+|               |   1 |   1 |         XX |    X |
+|---------------+-----+-----+------------+------|
+|            11 |   0 |   0 |         11 |    1 |
+|               |   0 |   1 |         11 |    1 |
+|               |   1 |   0 |         11 |    1 |
+|               |   1 |   1 |         XX |    X |
+
+** Next-state maps
+
+$Q_1^+$
+|           | $Q_1 Q_0 = 00$ | $Q_1 Q_0 = 01$ | $Q_1 Q_0 = 11$ | $Q_1 Q_0 = 10$ |
+| $DN = 00$ |              0 |              0 |              1 |              1 |
+| $DN = 01$ |              0 |              1 |              1 |              1 |
+| $DN = 11$ |              X |              X |              X |              X |
+| $DN = 10$ |              1 |              1 |              1 |              1 |
+
+$Q_0^+$
+|           | $Q_1 Q_0 = 00$ | $Q_1 Q_0 = 01$ | $Q_1 Q_0 = 11$ | $Q_1 Q_0 = 10$ |
+| $DN = 00$ |              0 |              1 |              1 |              0 |
+| $DN = 01$ |              1 |              0 |              1 |              1 |
+| $DN = 11$ |              X |              X |              X |              X |
+| $DN = 10$ |              0 |              1 |              1 |              1 |
+
+\begin{align*}
+Q_1^+ &= D + Q_1 + N Q_0 \\
+Q_0^+ &= Q_0 N' + Q_0' N + Q_1 D + Q_1 N
+\end{align*}
+
+** Implementation
+
+Two D flip-flops with the following input expressions:
+\begin{align*}
+D_1 &= D + Q_1 + N Q_0 \\
+D_0 &= Q_0 \lxor N + Q_1 (D + N) \\
+\mathrm{OPEN} &= Q_0 Q_1
+\end{align*}

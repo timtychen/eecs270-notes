@@ -1,0 +1,83 @@
+#+TITLE: HLSM Design
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-11-18
+
+* Example: Vending Machine System Design
+
+Include a combinational /datapath/ unit, which is a stateful circuit that stores
+the current amount of money entered.
+
+The HLSM consists of the following states:
+- Initialize
+- Wait
+- Add
+- Dispense
+  
+State transition table:
+
+$Q_1^+ Q_0^+$
+| $Q_1 Q_0 \downarrow$, $C tot\_lt\_s \rightarrow$ | 00 | 01 | 11 | 10 |
+|                                               00 | 01 | 01 | 01 | 01 |
+|                                               01 | 11 | 01 | 10 | 10 |
+|                                               11 | 00 | 00 | 00 | 00 |
+|                                               10 | 01 | 01 | 01 | 01 |
+
+Controller outputs:
+\begin{align*}
+tot\_ld &= Q_1 \overline{Q_0} \\
+d &= Q_1 Q_0 \\
+tot\_clr &= \overline{Q_1} \;\overline{Q_0}
+\end{align*}
+
+Next-state equations:
+\begin{align*}
+Q_1^+ &= C \overline{Q_1} Q_0 + \overline{tot\_lt\_s} \;\overline{Q_1} Q_0 \\
+Q_0^+ &= \overline{Q_0} + \overline{C}\;\overline{Q_1}
+\end{align*}
+
+The biggest difference between an HLSM and a FSM is that we deal with
+higher-level /states/ and focus on transitioning between states, not on raw
+binary values.
+* Asynchronous Design
+
+This is a non-clocked circuit that uses /latches/ to store output instead of 
+clocked flip-flops.
+
+Problems with latches:
+- Race conditions
+- Cycles
+* State Reduction
+
+Steps:
+1. Construct a triangular chart which contains a rectangular box for each pair
+   of states.
+2. Compare each pair of rows in the state table. If the outputs associated with
+   state $i$ and state $j$ are different, place an /X/ in square $(i, j)$ to
+   indicate that $i \ne j$.
+3. If the outputs are the same (empty boxes), then place an implied pair in
+   square $(i, j)$. 
+   
+** Example:
+
+| Present State | X = 0 | X = 1 | Output Z |
+|---------------+-------+-------+----------|
+| a             | d     | c     |        0 |
+| b             | f     | h     |        0 |
+| c             | e     | d     |        1 |
+| d             | a     | e     |        0 |
+| e             | c     | a     |        1 |
+| f             | f     | b     |        1 |
+| g             | b     | h     |        0 |
+| h             | c     | g     |        1 |
+
+[[./hlsm-state-reduction.xoj]]
+
+We can see here that $a = d$ and $c = e$. The reduced state table:
+| Present State | X = 0 | X = 1 | Output Z |
+|---------------+-------+-------+----------|
+| a             | a     | c     |        0 |
+| b             | f     | h     |        0 |
+| c             | c     | a     |        1 |
+| f             | f     | b     |        1 |
+| g             | b     | h     |        0 |
+| h             | c     | g     |        1 |
