@@ -1,6 +1,6 @@
 #+TITLE: HLSM Design
 #+AUTHOR: Nathan Moos
-#+DATE: 2015-11-18
+#+DATE: 2015-11-23
 
 * Example: Vending Machine System Design
 
@@ -81,3 +81,42 @@ We can see here that $a = d$ and $c = e$. The reduced state table:
 | f             | f     | b     |        1 |
 | g             | b     | h     |        0 |
 | h             | c     | g     |        1 |
+* Example: Code Detector Design
+
+Unlock door $u = 1$ when the sequence of buttons $s, r, b, g, r$ are pressed.
+
+Define states:
+- Wait :: $u = 0$, move to *Start* when $s = 1$; stay when $s = 0$
+- Start :: $u = 0$, move to *Red1* when $r = 1$; move to *Wait* when anything
+           else is 1.
+- Red1 :: $u = 0$, move to *Blue* when $b = 1$; move to *Wait* when anything
+          else is 1.
+- Blue :: $u = 0$, move to *Green* when $g = 1$; move to *Wait* when anything
+          else is 1.
+- Green :: $u = 0$, move to *Red2* when $r = 1$; move to *Wait when anything
+           else is 1.
+- Red2 :: $u = 1$, move to *Wait* unconditionally.
+* Glitching
+
+To eliminate glitches, use another flip-flop for your output. This complicates
+the next-state logic, but it eliminates glitches in the output and does not
+introduce additional delays.
+* Algorithmic Design
+
+Converting high-level language design to an HLSM that can be built in hardware.
+
+** Datapath
+   
+The algorithm's input and output variables are provided as input and output to
+the datapath.
+   
+The datapath consists of:
+- Registers
+- Combinational logic blocks
+- Multiplexers
+
+** Controller
+
+The controller is a finite state machine. Variables local to the inner loops in
+the high-level code are implemented as registers internal to the controller
+block.
