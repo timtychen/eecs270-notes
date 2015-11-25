@@ -1,0 +1,59 @@
+#+TITLE: Semiconductor Memories
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-11-25
+
+* Von Neumann Load/Store Architecture
+  
+** Register File
+
+Typically static RAM (SRAM) with multiple read/write ports. 
+
+This is the fastest memory.
+  
+** Cache
+
+Cache is general static RAM (SRAM) with content-addressable memory (CAM).
+
+This is also very fast.
+  
+** Volatile memory
+   
+Typically dynamic RAM (DRAM)
+
+There are two buses between main memory and the main processor -- the data bus
+and the address bus. 
+
+
+** Non-volatile memory
+   
+Varies from local solid-state drives to remote storage.
+* SRAM
+
+There are row address and column address buses, which are passed into decoders
+to activate a certain location in memory. 
+
+Memory cells are implemented as simple flip-flops with transistors located on
+each side of the cell. These transistors are referred to as /access/ or /pass/
+transistors.
+
+In order to write to a memory cell, the wordline must be selected, which enables
+the signal wired to BIT and $\overline{\mathrm{BIT}}$ to propagate into the flip-flop.
+
+To read from a memory cell, pre-charge the terminals, then select the wordline.
+
+* DRAM
+
+Easy to make larger amounts of memory -- 1600 times smaller than SRAM. 
+
+DRAM cells consist of a selection transistor and a capacitor. The bitlines of a
+DRAM chip use sense amplifiers to determine what values are located in each bit.
+
+The procedures for reading and writing are the same as SRAM.
+* ROM
+
+- Programmable ROM (PROM)
+- UV-PROM (Ultraviolet erasable PROM)
+- EEPROM (Electronically erasable PROM)
+- Flash memory, used in SSD drives.
+  
+Ironically, none of these are actually read-only.
