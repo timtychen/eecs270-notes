@@ -1,0 +1,46 @@
+#+TITLE: Microprocessor Design
+#+AUTHOR: Nathan Moos
+#+DATE: 2015-11-30
+
+* HLSM for a microprocessor
+
+1. Fetch instruction from memory
+2. Decode instruction
+3. Execute instruction and store the result in registers or memory
+   
+** Three-instruction processor
+
+The following operations are supported:
+- Load
+- Store
+- Add
+* Overall design
+  
+Memory will need to have two separate regions -- one for instruction and another
+for data.
+
+** Instruction Encoding
+
+16-bits wide: 4-bit opcode, 2-bit register A, 2-bit register B, and 8-bit memory
+address.
+
+- Load :: $0000r_1 r_0 r_1 r_0 a_7 a_6 a_5 a_4 a_3 a_2 a_1 a_0$
+- Store :: $0001r_1 r_0 r_1 r_0 a_7 a_6 a_5 a_4 a_3 a_2 a_1 a_0$
+- Add :: $0010r_{a1} r_{a0} r_{b1} r_{b0} a_7 a_6 a_5 a_4 a_3 a_2 a_1 a_0$
+
+** Fetch
+
+There will need to be a register to hold the current instruction, called the
+Instruction Register (IR). There will also need to be a pointer to an
+instruction, which is either called the Instruction Pointer or the Program
+Counter, usually called the Program Counter (PC). In a RISC architecture, this
+happens each clock cycle.
+** Decode
+
+Breaks up each instruction into its components and passes control to the proper
+hardware.
+
+** Register File
+
+Stores multiple registers. Uses a register address and data to enable assignment
+of data to registers.
