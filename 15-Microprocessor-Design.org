@@ -44,3 +44,9 @@ hardware.
 
 Stores multiple registers. Uses a register address and data to enable assignment
 of data to registers.
+* Datapath
+  
+To perform an addition in our simple microprocessor, it requires four datapath
+operations. We must first load values from RAM to register file. We will then
+perform the addition on the values in the register file, then store the register
+value into RAM.
