@@ -13,7 +13,7 @@ Assume there are at least two distinct elements in the Boolean field $B$:
 - Disjunction and conjunction are commutative.
 - Disjunction and conjunction are associative.
 - The identity for disjunction is 0 ($a + 0 = a$).
-- The identity for conjunction is 1 ($a + 1 = a$).
+- The identity for conjunction is 1 ($a \cdot 1 = a$).
 - Distributive laws hold for disjunction and conjunction too.
 - The /complement/ of $a$ is an element of $B$ that satisfies the
   following statements:
