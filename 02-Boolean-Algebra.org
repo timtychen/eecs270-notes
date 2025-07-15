@@ -15,12 +15,8 @@ Assume there are at least two distinct elements in the Boolean field $B$:
 - The identity for disjunction is 0 ($a + 0 = a$).
 - The identity for conjunction is 1 ($a \cdot 1 = a$).
 - Distributive laws hold for disjunction and conjunction too.
-- The /complement/ of $a$ is an element of $B$ that satisfies the
-  following statements:
-\begin{align*}
-a + a' &= 1 \\
-a \cdot a' &= 0
-\end{align*}
+- The *complement* of ($a$) is an element of ($B$) that satisfies the following:
+  ($a + a' = 1$) and ($a \cdot a' = 0$).
 - The /dual/ can be found by swapping AND and OR and swapping 0 and 1.
   - If both functions are equal, the expression is called /self-dual/.
 
