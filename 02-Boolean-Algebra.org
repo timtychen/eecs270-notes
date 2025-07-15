@@ -59,10 +59,20 @@ NAND($a,b$) = ($a \cdot b$)'
 
 Given an element $x \in B$, we can draw circuit switches to represent various laws:
 
-- Two-switch identity gates :: a two-switch OR gate can be reduced to a
-     single-switch AND gate.
+- Two-switch identity gates :: a two-switch OR/AND gate could be reduced to a single
+    switch if one of the switches is always 0/1.
+
+  $a + 0$ = $a$
+
+  $a \cdot 1$ = $a$
+
 - Idempotence Laws :: If two switches are coupled, they can be reduced to a
      single switch.
+
+  $a + a$ = $a$
+
+  $a \cdot a$ = $a$
+
 - Involution Laws :: If the NOT operation is applied twice in a row, the inverters
      can be eliminated.
 - Complementarity Laws :: A complement can be reduced to a constant gate.
