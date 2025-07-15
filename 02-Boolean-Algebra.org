@@ -22,9 +22,41 @@ Assume there are at least two distinct elements in the Boolean field $B$:
 
 * Huntington Postulates and Algebraic Laws
 
-Throughout, AND with NOT = NAND, OR with NOT = NOR. Each of these two gates are
-functionally complete.
-  
+Throughout, NOR = NOT OR, NAND = NOT AND. Each of these two gates are
+functionally complete, which means you can build any boolean expression (NOT, OR, AND) with only the operation.
+
+*Build using NOR*
+
+NOR($a,b$) = ($a + b$)'
+
+  *NOT*
+
+    $a'$ = ($a + a$)' = NOR($a, a$)
+
+  *OR* 
+
+    $a + b$ = NOR($a,b$)' = NOR[NOR($a,b$),NOR($a,b$)]
+
+  *AND*
+
+    $a \cdot b$ = ($a' + b'$)' = NOR($a',b'$) = NOR[NOR($a,a$),NOR($b,b$)]
+
+*Build using NAND*
+
+NAND($a,b$) = ($a \cdot b$)'
+
+  *NOT*
+
+    $a'$ = ($a \cdot a$)' = NAND($a,a$)
+
+  *AND*
+
+    $a \cdot b$ = NAND($a,b$)' = NAND[NAND($a,b$),NAND($a,b$)]
+
+  *OR*
+
+    $a + b$ = ($a' \cdot b'$)' = NAND($a',b'$) = NAND[NAND($a,a$),NAND($b,b$)]
+
 Given an element $x \in B$, we can draw circuit switches to represent various laws:
 
 - Two-switch identity gates :: a two-switch OR gate can be reduced to a
