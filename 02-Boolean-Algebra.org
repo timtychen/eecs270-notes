@@ -75,11 +75,29 @@ Given an element $x \in B$, we can draw circuit switches to represent various la
 
 - Involution Laws :: If the NOT operation is applied twice in a row, the inverters
      can be eliminated.
+
+  ($a'$)' = $a$
+
 - Complementarity Laws :: A complement can be reduced to a constant gate.
+
+  $a + a'$ = 1
+
+  $a \cdot a'$ = 0
+
 - Commutative Laws :: We can switch the direction of any two gates either ORed
      or ANDed to each other.
+
+  $a + b$ = $b + a$
+
+  $a \cdot b$ = $b \cdot a$
+
 - Associative Laws :: Two back-to-back two-input gates can be reduced to a single
      three-input gate.
+
+  ($a + b$) + $c$ = $a$ + ($b + c$) = $a + b + c$
+
+  ($a \cdot b$) $\cdot c$ = $a \cdot$ ($b \cdot c$) = $a \cdot b \cdot c$
+
 - DeMorgan's Laws :: AND \equiv NOR, OR \equiv NAND
 
 * Basic Theorems
