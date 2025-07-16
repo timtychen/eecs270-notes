@@ -107,10 +107,10 @@ Given an element $x \in B$, we can draw circuit switches to represent various la
 Goal: to minimize the number of required transistors.
 
 Statement: 
-\begin{align*}
-X \cdot Y + Y \cdot Z + X' \cdot Z &= X \cdot Y + X' \cdot Z \\
-(X + Y) \cdot (Y + Z) \cdot (X' + Z) &= (X + Y) \cdot (X' + Z)
-\end{align*}
+
+  ($a \cdot b$) + ($b \cdot c$) + ($a' \cdot c$) = ($a \cdot b$) + ($a' \cdot c$)
+
+  ($a + b$) $\cdot$ ($b + c$) $\cdot$ ($a' + c$) = ($a + b$) $\cdot$ ($a' + c$)
 
 In a sense, the middle gate is unnecessary. Proof is provided in the course
 pack.
