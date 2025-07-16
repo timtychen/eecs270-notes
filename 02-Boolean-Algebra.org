@@ -183,12 +183,22 @@ NAND(NAND{NAND[NAND($a,a$),NAND($b,b$)],NAND[NAND($a,a$),NAND($b,b$)]},NAND{NAND
 
 ** Inverter
 
-An inverter can be made with a NAND gate where both inputs are given the same value.
+An inverter can be made with a NAND gate where both inputs are given the same value. It bahaves like a NOT gate.
+
+$a'$ = ($a \cdot a$)' = NAND($a,a$)
 
 * CMOS Switches
 
 The "C" in "CMOS" refers to "complementary" -- there are two types of switch:
-PMOS and NMOS. 
+PMOS and NMOS. The PMOS is connnected to the Vdd (supply voltage), and the
+NMOS is connected to ground.
 
-For an NMOS switch, if the gate is =HIGH=, the switch is on. If the gate is
-=LOW=, the switch is off. A PMOS switch is opposite.
+When input = 0:
+
+PMOS = ON | NMOS = OFF | OUTPUT = HIGH (PMOS pulls node to Vdd)
+
+When input = 1: 
+
+PMOS = OFF | NMOS = ON | OUTPUT = LOW (NMOS pulls node to ground)
+
+
