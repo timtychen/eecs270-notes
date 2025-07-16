@@ -5,8 +5,8 @@
 * Timing Delay
   
 Two types of delay:
-- Gate Delays :: Due to parasitic reactances
-- Interconnect Delays :: Due to parasitic resistances
+- Gate Delays :: Due to parasitic reactances (gate process time)
+- Interconnect Delays :: Due to parasitic resistances (signal travel time)
 
 * Propagation Delay
   
