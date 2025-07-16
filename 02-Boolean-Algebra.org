@@ -16,7 +16,9 @@ Assume there are at least two distinct elements in the Boolean field $B$:
 - The identity for conjunction is 1 ($a \cdot 1 = a$).
 - Distributive laws hold for disjunction and conjunction too.
 - The *complement*, or logical NOT, of ($a$) is an element of ($B$) that satisfies the following:
-  ($a + a' = 1$) and ($a \cdot a' = 0$).
+
+($a + a' = 1$) and ($a \cdot a' = 0$).
+
 - The /dual/ can be found by swapping AND and OR and swapping 0 and 1.
   - If both functions are equal, the expression is called /self-dual/.
 
@@ -60,21 +62,21 @@ NAND($a,b$) = ($a \cdot b$)'
 Given an element $x \in B$, we can draw circuit switches to represent various laws:
 
 - Two-switch identity gates :: a two-switch OR/AND gate could be reduced to a single
-    switch if one of the switches is always 0/1.
+switch if one of the switches is always 0/1.
 
   $a + 0$ = $a$
 
   $a \cdot 1$ = $a$
 
 - Idempotence Laws :: If two switches are coupled, they can be reduced to a
-     single switch.
+single switch.
 
   $a + a$ = $a$
 
   $a \cdot a$ = $a$
 
 - Involution Laws :: If the NOT operation is applied twice in a row, the inverters
-     can be eliminated.
+can be eliminated.
 
   ($a'$)' = $a$
 
@@ -85,14 +87,14 @@ Given an element $x \in B$, we can draw circuit switches to represent various la
   $a \cdot a'$ = 0
 
 - Commutative Laws :: We can switch the direction of any two gates either ORed
-     or ANDed to each other.
+or ANDed to each other.
 
   $a + b$ = $b + a$
 
   $a \cdot b$ = $b \cdot a$
 
 - Associative Laws :: Two back-to-back two-input gates can be reduced to a single
-     three-input gate.
+three-input gate.
 
   ($a + b$) + $c$ = $a$ + ($b + c$) = $a + b + c$
 
@@ -128,40 +130,56 @@ $C_{out} = A \cdot B + B \cdot C_{in} + C_{in} \cdot A$
 
 * Common Logic Gates
   
-When drawing gates, a small bubble on the incoming wire means
-negation right before the gate.
+When drawing gates, a small bubble indicates logical NOT.
 
-- AND :: Both inputs must be 1.
-- OR :: Both inputs must not be 0.
-- XOR :: Only one of the inputs must be 1.
-- Inverter (NOT) :: Returns the opposite of the input.
-- Buffer :: Returns the input.
-- NAND :: NOT + AND
+Outputs 1 when:
+
+- AND :: Both inputs are 1.
+- OR :: At least one input is 1.
+- NAND :: NOT + AND 
 - NOR :: NOT + OR
-- XNOR :: Tests for equivalence.
+- XOR :: Only one of the inputs is 1. Test for difference.
+- XNOR :: Both inputs are the same. Tests for equivalence.
+- Inverter (NOT) :: Input is 0. (Inverts input)
+- Buffer :: Input is 1. (Returns input)
 
 ** Common functions in terms of binary gates
 
-- Inhibition :: $x \land \lnot y$ ($x$ NAND $y$)
+- Inhibition :: $a \cdot b'$
                 
-** XOR
+** XOR/XNOR
 
-An XOR gate can be built from 4 NAND gates.
+$a$ XOR $b$ = $a' \cdot b$ + $a \cdot b'$
 
-\begin{circuitikz} \draw
-(0, 2) node [nand port] (gate1) {}
-(1, 3) node [nand port] (gate2) {}
-(1, 1) node [nand port] (gate3) {}
-(2, 2) node [nand port] (gate4) {}
-(gate1.out) -- (gate2.in 2)
-(gate1.out) -- (gate3.in 1)
-(gate2.out) -- (gate4.in 1)
-(gate3.out) -- (gate4.in 2);
-\end{circuitikz}
+$a$ XNOR $b$ = $a \cdot b$ + $a' \cdot b'$
 
-** XNOR
+XOR and XNOR gates could be built from NAND gates. First we define each operation
+in terms of NAND, as shown in above sections.
 
-An XNOR gate can be built from 4 NAND gates. 
+    $a'$ = ($a \cdot a$)' = NAND($a,a$)
+
+    $a \cdot b$ = NAND($a,b$)' = NAND[NAND($a,b$),NAND($a,b$)]
+
+    $a + b$ = ($a' \cdot b'$)' = NAND($a',b'$) = NAND[NAND($a,a$),NAND($b,b$)]
+
+Then, using these operations we can build XOR
+
+  $a$ XOR $b$ = $a' \cdot b$ + $a \cdot b'$ = (NAND($a,a$) $\cdot b$) + ($a \cdot$ NAND($b,b$)) =
+
+  NAND{NAND[NAND($a,a$), $b$],NAND[NAND($a,a$), $b$]} + NAND{NAND[ $a$,NAND($b,b$)],NAND[ $a$,NAND($b,b$)]} =
+
+  NAND(NAND{NAND[NAND($a,a$), $b$],NAND[NAND($a,a$), $b$]},NAND{NAND[NAND($a,a$), $b$],NAND[NAND($a,a$), $b$]}) + 
+
+  NAND(NAND{NAND[ $a$,NAND($b,b$)],NAND[ $a$,NAND($b,b$)]},NAND{NAND[ $a$,NAND($b,b$)],NAND[ $a$,NAND($b,b$)]})
+
+and XNOR
+
+  $a$ XNOR $b$ = $a \cdot b$ + $a' \cdot b'$ = $a \cdot b$ + NAND($a,a$) $\cdot$ NAND($b,b$) =
+
+  NAND[NAND($a,b$),NAND($a,b$)] + NAND{NAND[NAND($a,a$),NAND($b,b$)],NAND[NAND($a,a$),NAND($b,b$)]} =
+
+  NAND[NAND{NAND[NAND($a,b$),NAND($a,b$)],NAND[NAND($a,b$),NAND($a,b$)]},
+NAND(NAND{NAND[NAND($a,a$),NAND($b,b$)],NAND[NAND($a,a$),NAND($b,b$)]},NAND{NAND[NAND($a,a$),NAND($b,b$)],NAND[NAND($a,a$),NAND($b,b$)]})]
 
 ** Inverter
 
