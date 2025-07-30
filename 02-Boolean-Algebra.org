@@ -126,7 +126,7 @@ easier to write programs from mathematical descriptions.
   
 This function is self-dual. 
 
-$C_{out} = A \cdot B + B \cdot C_{in} + C_{in} \cdot A$
+C_{out} = A \cdot B + B \cdot C_{in} + C_{in} \cdot A
 
 * Common Logic Gates
   
@@ -145,7 +145,7 @@ Outputs 1 when:
 
 ** Common functions in terms of binary gates
 
-- Inhibition :: $a \cdot b'$
+- Inhibition :: a \cdot b'
                 
 ** XOR/XNOR
 
