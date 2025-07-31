@@ -201,4 +201,23 @@ When input = 1:
 
 PMOS = OFF | NMOS = ON | OUTPUT = LOW (NMOS pulls node to ground)
 
+* Canonical Form
+
+Sum of minterms
+
+Literals include every variable exactly once
+
+Ex: F = a'bc' + a'bc + abc
+
+* Converting Among Boolean Function Representations
+
+Equations to Circuits- Straightforward
+
+Circuits to Equations- Start from inputs, work towards final output
+
+Equations to Truth Tables- List all combinations of inputs, then list results of functions in
+intermediate columns
+
+Truth Tables to Equations- For each 1 in output column, create a product term of inputs, then 
+add them all up to get output
 
