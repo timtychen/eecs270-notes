@@ -19,7 +19,7 @@ $t_{pLH}$.
 
 To find the propagation delay $t_p$, you simply average the rise and fall delays.
 
-If there are multiple paths through the circuit, you need to critically inspect 
+If there are multiple paths through the circuit, you need to inspect 
 *all* the paths to find the propagation delay of the entire circuit. The longest
 delay in the circuit is called the /critical path/.
 
