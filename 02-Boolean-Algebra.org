@@ -201,13 +201,19 @@ When input = 1:
 
 PMOS = OFF | NMOS = ON | OUTPUT = LOW (NMOS pulls node to ground)
 
-* Canonical Form
+* Notations
 
-Sum of minterms
+Minterms (Sum of Products)
 
 Literals include every variable exactly once
 
 Ex: F = a'bc' + a'bc + abc
+
+Minterms (Products of Sums)
+
+Literals include every variable exactly once
+
+Ex: F = (a'+b+c) \cdot (a'+b'+c)
 
 * Converting Among Boolean Function Representations
 
