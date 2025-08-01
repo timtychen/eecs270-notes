@@ -201,7 +201,7 @@ When input = 1:
 
 PMOS = OFF | NMOS = ON | OUTPUT = LOW (NMOS pulls node to ground)
 
-* Notations
+* Canonical Forms
 
 Minterms (Sum of Products)
 
